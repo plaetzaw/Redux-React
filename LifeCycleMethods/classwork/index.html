@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Solo Redux</title>
+  </head>
+  <body>
+    U smell like poo
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/redux/4.0.5/redux.min.js"></script>
+
+    <script>
+      //action creator - event
+      function addPerson(id, name, age) {
+        //return an object
+        //return
+        return {
+          type: "ADD",
+          personData: {
+            id: id,
+            name: name,
+            age: age
+          }
+        };
+      }
+
+      function removePerson(id) {
+        return {
+          type: "REMOVE",
+          personid: id
+        };
+      }
+
+      let initialState = {
+        persons: []
+      };
+      function reducer(state, action) {
+        if (state === undefined) {
+          state = initialState;
+        }
+        if (action.type === "ADD") {
+          //update the state
+          let newPerson = {
+            id: action.personData.id,
+            name: action.personData.name,
+            age: action.personData.age
+          };
+          return {
+            ...state,
+            persons: state.persons.concat(newPerson)
+          };
+        } else if (action.type === "REMOVE") {
+          //update the state
+          // [{}. {}. {}]
+          return {
+            ...state,
+            persons: state.persons.filter(p => p.id != action.personid)
+          };
+        }
+      }
+
+      let store = Redux.createStore(reducer);
+
+      store.subscribe(showState);
+
+      function showState() {
+        console.log(store.getState());
+      }
+      store.dispatch(addPerson(1, "Balkazar", 25));
+      store.dispatch(addPerson(2, "Gruntlod", 31));
+      store.dispatch(addPerson(3, "Ziero", 21));
+      store.dispatch(addPerson(4, "Bruno", 18));
+      store.dispatch(addPerson(5, "Gregio", 28));
+      store.dispatch(addPerson(6, "Zoldar", 34));
+      store.dispatch(addPerson(7, "Midnight", 30));
+      store.dispatch(addPerson(8, "Borat", 26));
+
+      store.dispatch(removePerson(3));
+      store.dispatch(removePerson(4));
+      store.dispatch(removePerson(8));
+    </script>
+  </body>
+</html>
